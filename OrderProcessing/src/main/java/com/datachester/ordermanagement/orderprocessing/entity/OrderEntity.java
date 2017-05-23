@@ -2,10 +2,12 @@ package com.datachester.ordermanagement.orderprocessing.entity;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-public class OrderDB {
+public class OrderEntity {
     
 	    @Id
-	    @GeneratedValue
+	    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUST_SEQ")
+	    @SequenceGenerator(sequenceName = "customer_seq", allocationSize = 1, name = "CUST_SEQ")
+	    
 	    //(strategy = GenerationType.AUTO)
 	    private int id;
 	    
@@ -13,14 +15,15 @@ public class OrderDB {
 	 
 	    private String Name;
 	    
-	    private Date CreateDate;
-        public OrderDB(){
-    		CreateDate = new Date();
+	    @Column(name = "CREATED_DATE")
+	    private Date date;
+        public OrderEntity(){
+    		date = new Date();
         }
-        public OrderDB(String orderID,String name){
+        public OrderEntity(String orderID,String name){
         	this.OrderID = orderID;
         	this.Name = name;
-        	this.CreateDate = new Date();
+        	this.date = new Date();
         }
 	    public void setid(int id){
 	    	this.id = id;
@@ -45,11 +48,11 @@ public class OrderDB {
 	    }
 	 
 	    public Date getCreateDate() {
-	        return CreateDate;
+	        return date;
 	    }
 	 
 	    public void setCreateDate(Date createdate) {
-	        this.CreateDate = createdate;
+	        this.date = createdate;
 	    }
 	 
 	

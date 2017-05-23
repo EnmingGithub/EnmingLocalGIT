@@ -26,7 +26,7 @@ public class OrderProcessingController {
 	@RequestMapping(method=RequestMethod.POST)
 	public String save(@RequestBody Order order){
 		orderMap.put(order.getOrderNumber(), order);
-		repository.save(new OrderDB(order.getOrderNumber(),order.getName()));
+		repository.save(new OrderEntity(order.getOrderNumber(),order.getName()));
 		return "saved";
 	}
 	@RequestMapping(method=RequestMethod.DELETE)
@@ -41,7 +41,7 @@ public class OrderProcessingController {
 		return "Order "+Orderid+" deleted";
 	}
 	@RequestMapping(value="/{OrderID}",method=RequestMethod.GET)
-	public OrderDB getOrderDB(@PathVariable("OrderID") int Orderid){
+	public OrderEntity getOrderDB(@PathVariable("OrderID") int Orderid){
 		return repository.findOne(Orderid);
 	}
     //@RequestMapping("/addone")
@@ -60,7 +60,7 @@ public class OrderProcessingController {
     //}
 	
     @RequestMapping("/findAll")
-    public Iterable<OrderDB> findAll(){
+    public Iterable<OrderEntity> findAll(){
     	return repository.findAll();
     }
 	//@RequestMapping("/{orderNumber}")
