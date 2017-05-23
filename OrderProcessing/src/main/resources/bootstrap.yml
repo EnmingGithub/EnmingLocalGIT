@@ -1,0 +1,6 @@
+spring:
+  config:
+    name: orderProcessor
+
+server:
+  port: 8080
