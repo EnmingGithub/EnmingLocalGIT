@@ -5,5 +5,5 @@ import java.util.List;
 public interface OrderService {
       public void create(OrderEntity order);
       public List<OrderEntity> getAll();
-      public void get(String orderid);
+      public List<OrderEntity> get(String orderid);
 }
