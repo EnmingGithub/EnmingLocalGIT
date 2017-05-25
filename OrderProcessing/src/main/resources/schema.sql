@@ -1,7 +1,7 @@
-drop table if exists `orders`;
-CREATE TABLE `orders` (
+drop table if exists `ORDERS`;
+CREATE TABLE `ORDERS` (
   `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `OrderID` VARCHAR(100) NOT NULL,
+  `ORDERID` VARCHAR(100) NOT NULL,
   `NAME` VARCHAR(100) NOT NULL,
   `CREATED_DATE` DATE,
   PRIMARY KEY (`ID`)

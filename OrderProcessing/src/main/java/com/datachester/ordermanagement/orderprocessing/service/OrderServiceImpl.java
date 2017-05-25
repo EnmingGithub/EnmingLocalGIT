@@ -22,8 +22,9 @@ public class OrderServiceImpl implements OrderService {
 	
     @Override
     public void create(OrderEntity order){
-    	String sql = "INSERT INTO orders " + "(id, name) VALUES (seq_users_id.nextval, ?)";
-    	jdbcTemplate.update(sql, order.getName());
+    	String sql = "INSERT INTO orders " + "(id,OrderID,Name,Date) VALUES (seq_users_id.nextval, ?, ?, ?)";
+    	jdbcTemplate.update(sql, order.getOrderId(), order.getName(),order.getCreateDate());
+    	
     }
     
     @Override
