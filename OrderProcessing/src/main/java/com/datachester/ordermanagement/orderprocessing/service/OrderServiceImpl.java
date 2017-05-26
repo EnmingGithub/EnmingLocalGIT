@@ -19,12 +19,15 @@ public class OrderServiceImpl implements OrderService {
    // public UserJdbcRepository(JdbcTemplate jdbcTemplate) {
    //     this.jdbcTemplate = jdbcTemplate;
    // }
-	
-    @Override
+	int i = 1;
+    @Autowired
+	@Override
     public void create(OrderEntity order){
-    	String sql = "INSERT INTO orders " + "(id,OrderID,Name,Date) VALUES (seq_users_id.nextval, ?, ?, ?)";
-    	jdbcTemplate.update(sql, order.getOrderId(), order.getName(),order.getCreateDate());
-    	
+    	String sql = "INSERT INTO orders (id,OrderID,Name,CREATED_DATE) VALUES (?,?,?,?)";
+    	//jdbcTemplate.update(sql);
+    	jdbcTemplate.update(sql,i, order.getOrderId(), order.getName(),order.getCreateDate());
+    	i++;
+    	//return order.getOrderId();
     }
     
     @Override

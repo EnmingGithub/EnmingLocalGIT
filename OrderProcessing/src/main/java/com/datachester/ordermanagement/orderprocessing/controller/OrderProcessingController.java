@@ -35,7 +35,9 @@ public class OrderProcessingController {
 	public String save(@RequestBody OrderEntity order){
 	//	orderMap.put(order.getOrderNumber(), order);
 	//	repository.save(new OrderEntity(order.getOrderNumber(),order.getName()));
+		
 		Orderservice.create(order);
+		//return order.getOrderId()+order.getName();
 		return "saved";
 	}
 	@RequestMapping(method=RequestMethod.DELETE)
