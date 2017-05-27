@@ -15,7 +15,7 @@ public class OrderEntity {
 	 
 	    private String Name;
 	    
-	 //O   @Column(name = "CREATED_DATE")
+	 //   @Column(name = "CREATED_DATE")
 	    private Date date;
         public OrderEntity(){
     		date = new Date();
@@ -57,3 +57,4 @@ public class OrderEntity {
 	 
 	
 }
+

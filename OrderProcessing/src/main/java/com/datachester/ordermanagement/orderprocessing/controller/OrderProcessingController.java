@@ -1,6 +1,8 @@
 package com.datachester.ordermanagement.orderprocessing.controller;
 //import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 //import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.datachester.ordermanagement.orderprocessing.service.OrderServiceImpl;
 import com.datachester.ordermanagement.orderprocessing.entity.*;
 //import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
-import com.datachester.ordermanagement.orderprocessing.vo.Order;
+import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
 @RestController
 @RequestMapping("/ordering")
 public class OrderProcessingController {
@@ -41,9 +43,9 @@ public class OrderProcessingController {
 		return "saved";
 	}
 	@RequestMapping(method=RequestMethod.DELETE)
-	public String deleteOrderMAP(@RequestBody Order order){
+	public String deleteOrderMAP(@RequestBody OrderEntity order){
 	//	orderMap.remove(order.getOrderNumber());
-		return order.getOrderNumber();
+		return order.getOrderId();
 	}
 	
 	@RequestMapping(value="/{OrderID}",method=RequestMethod.DELETE)
@@ -52,7 +54,7 @@ public class OrderProcessingController {
 		return "Order "+Orderid+" deleted";
 	}
 	@RequestMapping(value="/{OrderID}",method=RequestMethod.GET)
-	public List<OrderEntity> getOrderDB(@PathVariable("OrderID") String Orderid){
+	public List<Map<String, Object>> getOrderDB(@PathVariable("OrderID") String Orderid){
 		return Orderservice.get(Orderid);
 	}
     //@RequestMapping("/addone")
@@ -71,12 +73,16 @@ public class OrderProcessingController {
     //}
 	
     @RequestMapping("/findAll")
-    public Iterable<OrderEntity> findAll(){
+    public List<Map<String, Object>> findAll(){
     	return Orderservice.getAll();
     }
 	//@RequestMapping("/{orderNumber}")
 	//public Order getOrder(@PathVariable String orderNumber){
 	//	return orderMap.get(orderNumber);
 		
-	//}
+	
+    @RequestMapping("/total")
+    public int countAll(){
+    	return Orderservice.getnum();
+    }
 }

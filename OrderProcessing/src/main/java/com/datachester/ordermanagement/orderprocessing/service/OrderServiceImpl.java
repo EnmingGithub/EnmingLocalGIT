@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 //import java.sql.SQLException;
 //import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 @Repository
 public class OrderServiceImpl implements OrderService {
     @Autowired
@@ -31,16 +32,25 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
-    public List<OrderEntity> get(String OrderID){
-    	String sql = "SELECT * FROM orders WHERE OrderID = "+OrderID;
-    	return jdbcTemplate.query(sql, (rs,rowNum) -> new OrderEntity(rs.getString("OrderID"),rs.getString("Name") ));
+    public List<Map<String,Object>> get(String OrderID){
+    	String sql = "SELECT * FROM orders WHERE OrderID = ?";
+    	return jdbcTemplate.queryForList(sql, OrderID);
+
     }
     @Override
-    public List<OrderEntity> getAll() {
+    public List<Map<String, Object>> getAll() {
     	String sql = "SELECT * FROM orders";
 
-        return jdbcTemplate.query(sql,
-                (rs, rowNum) -> new OrderEntity(rs.getString("OrderID"),rs.getString("Name") ));
+        return jdbcTemplate.queryForList(sql);
+                
+    }
+    @Override
+    public int getnum(){
+    	String sql = "SELECT COUNT(*) FROM ORDERS";
+
+    	int total = jdbcTemplate.queryForObject(sql,Integer.class);
+
+    	return total;
     }
     
 }
