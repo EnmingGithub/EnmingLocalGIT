@@ -1,56 +1,45 @@
 package com.datachester.ordermanagement.orderprocessing.service;
 
-import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
-import com.datachester.ordermanagement.orderprocessing.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
 //import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-@Repository
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.datachester.ordermanagement.orderprocessing.vo.OrderRequest;
+import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
+import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
+
+@Service
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-	private JdbcTemplate jdbcTemplate;
-    
-   // @Autowired
-   // public UserJdbcRepository(JdbcTemplate jdbcTemplate) {
-   //     this.jdbcTemplate = jdbcTemplate;
-   // }
-	int i = 1;
-    @Autowired
+	@Autowired
+	private OrderRepository orderRepo;
+	
 	@Override
-    public void create(OrderEntity order){
-    	String sql = "INSERT INTO orders (id,OrderID,Name,CREATED_DATE) VALUES (?,?,?,?)";
-    	//jdbcTemplate.update(sql);
-    	jdbcTemplate.update(sql,i, order.getOrderId(), order.getName(),order.getCreateDate());
-    	i++;
-    	//return order.getOrderId();
-    }
-    
-    @Override
-    public List<Map<String,Object>> get(String OrderID){
-    	String sql = "SELECT * FROM orders WHERE OrderID = ?";
-    	return jdbcTemplate.queryForList(sql, OrderID);
+    public void create(OrderRequest order){
+		OrderEntity orderEntity = new OrderEntity();
+		orderEntity.setOrderID(order.getOrderID());
+		orderEntity.setName(order.getName());
+		//orderEntity.setDate(order.getDate());
+		
+		orderRepo.save(orderEntity);
+	}
 
-    }
     @Override
-    public List<Map<String, Object>> getAll() {
-    	String sql = "SELECT * FROM orders";
-
-        return jdbcTemplate.queryForList(sql);
-                
+    public List<OrderEntity > get(String orderID){
+        return orderRepo.findByOrderID(orderID);
+        
     }
     @Override
-    public int getnum(){
-    	String sql = "SELECT COUNT(*) FROM ORDERS";
-
-    	int total = jdbcTemplate.queryForObject(sql,Integer.class);
-
-    	return total;
+    public List<OrderEntity> getAll() {
+        return orderRepo.findAll();
     }
-    
+    @Override
+    public long getnum(){
+    	return orderRepo.count();
+    }
+    @Override
+    public void delete(Integer id){
+    	orderRepo.delete(id);
+    }
 }

@@ -1,10 +1,12 @@
 package com.datachester.ordermanagement.orderprocessing.controller;
 //import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 //import java.util.Map;
 import javax.sql.DataSource;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.jdbc.core.JdbcTemplate;
 //import org.springframework.context.ApplicationListener;
@@ -13,12 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.datachester.ordermanagement.orderprocessing.service.OrderServiceImpl;
-import com.datachester.ordermanagement.orderprocessing.entity.*;
 //import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
 import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
+import com.datachester.ordermanagement.orderprocessing.vo.OrderRequest;
 @RestController
 @RequestMapping("/ordering")
 public class OrderProcessingController {
@@ -26,7 +29,7 @@ public class OrderProcessingController {
     DataSource dataSource;
 
     @Autowired
-    private OrderServiceImpl Orderservice;
+    private OrderServiceImpl orderservice;
 	//private OrderRepository repository;
 
 	//TODO need to replace with DB calls
@@ -34,28 +37,28 @@ public class OrderProcessingController {
   //  int orderindex = 1;
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String save(@RequestBody OrderEntity order){
-	//	orderMap.put(order.getOrderNumber(), order);
-	//	repository.save(new OrderEntity(order.getOrderNumber(),order.getName()));
+	@ResponseStatus(HttpStatus.CREATED)
+	public void save(@RequestBody OrderRequest order){
+
+		orderservice.create(order);
 		
-		Orderservice.create(order);
-		//return order.getOrderId()+order.getName();
-		return "saved";
 	}
 	@RequestMapping(method=RequestMethod.DELETE)
-	public String deleteOrderMAP(@RequestBody OrderEntity order){
+	public String deleteOrderMAP(@RequestBody OrderRequest order){
 	//	orderMap.remove(order.getOrderNumber());
-		return order.getOrderId();
+		//Orderservice.delete(order);
+		return "Order  deleted";
 	}
 	
 	@RequestMapping(value="/{OrderID}",method=RequestMethod.DELETE)
 	public String deleteOrderDB(@PathVariable("OrderID") int Orderid){
 	//	repository.delete(repository.findOne(Orderid));
+		orderservice.delete(Orderid);
 		return "Order "+Orderid+" deleted";
 	}
 	@RequestMapping(value="/{OrderID}",method=RequestMethod.GET)
-	public List<Map<String, Object>> getOrderDB(@PathVariable("OrderID") String Orderid){
-		return Orderservice.get(Orderid);
+	public List<OrderEntity> getOrderDB(@PathVariable("OrderID") String Orderid){
+		return orderservice.get(Orderid);
 	}
     //@RequestMapping("/addone")
    // public String orderadd(){
@@ -73,8 +76,8 @@ public class OrderProcessingController {
     //}
 	
     @RequestMapping("/findAll")
-    public List<Map<String, Object>> findAll(){
-    	return Orderservice.getAll();
+    public List<OrderEntity> findAll(){
+    	return orderservice.getAll();
     }
 	//@RequestMapping("/{orderNumber}")
 	//public Order getOrder(@PathVariable String orderNumber){
@@ -82,7 +85,7 @@ public class OrderProcessingController {
 		
 	
     @RequestMapping("/total")
-    public int countAll(){
-    	return Orderservice.getnum();
+    public long countAll(){
+    	return orderservice.getnum();
     }
 }
