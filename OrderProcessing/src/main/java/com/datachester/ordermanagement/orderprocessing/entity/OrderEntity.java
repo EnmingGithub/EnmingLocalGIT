@@ -11,13 +11,15 @@ public class OrderEntity {
 	@SequenceGenerator(sequenceName = "customer_seq", allocationSize = 1, name = "CUST_SEQ")
 	private Integer id;
 	private String orderID;
-	private String Name;
+	private String name;
+	private String status;
 	
 	@Column(name = "CREATED_DATE")
 	private Date date;
-
+    
 	public OrderEntity() {
 		date = new Date();
+		status = "preparing shipping";
 	}
 
 	public Integer getId() {
@@ -26,16 +28,6 @@ public class OrderEntity {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-
-
-	public String getName() {
-		return Name;
-	}
-
-	public void setName(String name) {
-		Name = name;
 	}
 
 	public Date getDate() {
@@ -52,5 +44,21 @@ public class OrderEntity {
 
 	public void setOrderID(String orderID) {
 		this.orderID = orderID;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

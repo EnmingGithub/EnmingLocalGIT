@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.datachester.ordermanagement.orderprocessing.vo.OrderRequest;
+import com.datachester.ordermanagement.orderprocessing.vo.*;
 import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
 import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
 
@@ -14,20 +14,24 @@ import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
 public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderRepository orderRepo;
-	
+
 	@Override
     public void create(OrderRequest order){
 		OrderEntity orderEntity = new OrderEntity();
 		orderEntity.setOrderID(order.getOrderID());
 		orderEntity.setName(order.getName());
 		//orderEntity.setDate(order.getDate());
-		
+	    orderEntity.setStatus(order.getStatus());
 		orderRepo.save(orderEntity);
 	}
 
     @Override
-    public List<OrderEntity > get(String orderID){
-        return orderRepo.findByOrderID(orderID);
+    public OrderResponse get(String orderID){
+    	OrderResponse orderresponse = new OrderResponse();
+    	orderresponse.setOrderID(orderRepo.findByOrderID(orderID).getOrderID());
+    	orderresponse.setName(orderRepo.findByOrderID(orderID).getName());
+    	orderresponse.setStatus(orderRepo.findByOrderID(orderID).getStatus());
+        return orderresponse;
         
     }
     @Override
@@ -41,5 +45,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void delete(Integer id){
     	orderRepo.delete(id);
+    }
+    @Override
+    public String getStatus(String Orderid){
+    	return orderRepo.findByOrderID(Orderid).getStatus();
     }
 }
