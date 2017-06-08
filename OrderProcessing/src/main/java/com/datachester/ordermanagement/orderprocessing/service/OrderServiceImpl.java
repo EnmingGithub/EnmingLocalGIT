@@ -20,8 +20,6 @@ public class OrderServiceImpl implements OrderService {
 		OrderEntity orderEntity = new OrderEntity();
 		orderEntity.setOrderID(order.getOrderID());
 		orderEntity.setName(order.getName());
-		//orderEntity.setDate(order.getDate());
-	    orderEntity.setStatus(order.getStatus());
 		orderRepo.save(orderEntity);
 	}
 
@@ -31,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     	orderresponse.setOrderID(orderRepo.findByOrderID(orderID).getOrderID());
     	orderresponse.setName(orderRepo.findByOrderID(orderID).getName());
     	orderresponse.setStatus(orderRepo.findByOrderID(orderID).getStatus());
+        orderresponse.setDate(orderRepo.findByOrderID(orderID).getDate());
         return orderresponse;
         
     }

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
 //import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
 //import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
-import com.datachester.ordermanagement.orderprocessing.service.OrderServiceImpl;
+import com.datachester.ordermanagement.orderprocessing.service.*;
 import com.datachester.ordermanagement.orderprocessing.vo.*;
 @RestController
 
@@ -30,6 +30,7 @@ public class OrderProcessingController {
 
     @Autowired
     private OrderServiceImpl orderservice;
+    private DeliveryServiceImpl deliveryservice;
 
 	@RequestMapping(value="/ordering",method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -44,10 +45,7 @@ public class OrderProcessingController {
 	public void deleteOrderDB(@PathVariable("OrderID") String Orderid){
 		if ( orderservice.get(Orderid).getStatus() == "preparing shipping"){
 			orderservice.delete(Integer.getInteger(Orderid));
-		}else {
-			
-		};
-		
+		}		
 	}
 	@RequestMapping(value="/ordering/{OrderID}",method=RequestMethod.GET)
 	public OrderResponse getOrderDB(@PathVariable("OrderID") String Orderid){
@@ -65,6 +63,21 @@ public class OrderProcessingController {
     public long countAll(){
     	return orderservice.getnum();
     }
+    
+    @RequestMapping(value="/ship",method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void ship(@RequestBody String orderID){
+
+		deliveryservice.ship(orderID);
+		
+	}
+    @RequestMapping(value="/deliver",method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void deliver(@RequestBody String orderID){
+
+		deliveryservice.deliver(orderID);
+		
+	}
     
 }
 
