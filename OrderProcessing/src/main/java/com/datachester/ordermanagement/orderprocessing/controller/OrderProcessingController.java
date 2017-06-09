@@ -30,6 +30,7 @@ public class OrderProcessingController {
 
     @Autowired
     private OrderServiceImpl orderservice;
+    @Autowired
     private DeliveryServiceImpl deliveryservice;
 
 	@RequestMapping(value="/ordering",method=RequestMethod.POST)
@@ -40,11 +41,11 @@ public class OrderProcessingController {
 		
 	}
 
-	@RequestMapping(value="/cancel/{OrderID}",method=RequestMethod.DELETE)
+	@RequestMapping(value="/cancel",method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteOrderDB(@PathVariable("OrderID") String Orderid){
-		if ( orderservice.get(Orderid).getStatus() == "preparing shipping"){
-			orderservice.delete(Integer.getInteger(Orderid));
+	public void deleteOrderDB(@RequestBody OrderRequest Orderid){
+		if ( orderservice.get(Orderid.getOrderID()).getStatus() == "preparing shipping"){
+			orderservice.delete(Orderid.getOrderID());
 		}		
 	}
 	@RequestMapping(value="/ordering/{OrderID}",method=RequestMethod.GET)
@@ -66,14 +67,14 @@ public class OrderProcessingController {
     
     @RequestMapping(value="/ship",method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public void ship(@RequestBody String orderID){
+	public void ship(@RequestBody OrderRequest orderID){
 
 		deliveryservice.ship(orderID);
 		
 	}
     @RequestMapping(value="/deliver",method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public void deliver(@RequestBody String orderID){
+	public void deliver(@RequestBody OrderRequest orderID){
 
 		deliveryservice.deliver(orderID);
 		

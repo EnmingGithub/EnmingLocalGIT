@@ -9,6 +9,6 @@ public interface OrderService {
       public List<OrderEntity> getAll();
       public OrderResponse get(String orderid);
       public long getnum();
-      public void delete(Integer id);
+      public void delete(String orderID);
       public String getStatus(String orderid);
 }

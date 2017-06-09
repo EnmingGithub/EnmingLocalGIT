@@ -42,8 +42,8 @@ public class OrderServiceImpl implements OrderService {
     	return orderRepo.count();
     }
     @Override
-    public void delete(Integer id){
-    	orderRepo.delete(id);
+    public void delete(String orderID){
+    	orderRepo.delete(orderRepo.findByOrderID(orderID).getId());
     }
     @Override
     public String getStatus(String Orderid){

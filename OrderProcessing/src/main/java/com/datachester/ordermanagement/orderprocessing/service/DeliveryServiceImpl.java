@@ -11,17 +11,20 @@ public class DeliveryServiceImpl implements DeliveryService{
 	private OrderRepository orderRepo;
 
 	@Override
-	public void ship(String orderID){
+	public void ship(OrderRequest orderID){
+		
 		OrderEntity orderupdate = new OrderEntity();
-		orderupdate = orderRepo.findByOrderID(orderID);
+		orderupdate = orderRepo.findByOrderID(orderID.getOrderID());
 		orderupdate.setStatus("Shipping");
 		orderRepo.save(orderupdate);
+		
 	}
 	
 	@Override
-    public void deliver(String orderID){
+    public void deliver(OrderRequest orderID){
 		OrderEntity orderupdate = new OrderEntity();
-		orderupdate = orderRepo.findByOrderID(orderID);
+		orderupdate = orderRepo.findByOrderID(orderID.getOrderID());
 		orderupdate.setStatus("Delivered");
+		orderRepo.save(orderupdate);
 	}
 }
