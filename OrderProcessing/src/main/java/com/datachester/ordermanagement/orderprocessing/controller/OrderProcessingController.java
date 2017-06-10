@@ -43,10 +43,18 @@ public class OrderProcessingController {
 
 	@RequestMapping(value="/cancel",method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteOrderDB(@RequestBody OrderRequest Orderid){
-		if ( orderservice.get(Orderid.getOrderID()).getStatus() == "preparing shipping"){
-			orderservice.delete(Orderid.getOrderID());
-		}		
+	public String deleteOrderDB(@RequestBody OrderRequest orderCancel){
+		if ( orderservice.get(orderCancel.getOrderID()).getStatus() == "preparing shipping"){
+			orderservice.delete(orderCancel.getOrderID());
+			return "Order " + orderCancel.getOrderID() + " Cancelled";
+		}
+		else if (orderservice.get(orderCancel.getOrderID()).getStatus() == "Shipping"){
+			return "Order " + orderCancel.getOrderID() + " already been shipped, can not be cancel now.";
+		}else if (orderservice.get(orderCancel.getOrderID()).getStatus() == "Delivered") {
+			return "Order " + orderCancel.getOrderID() + " already beeb delivered, can not be cancel now.";
+		}else{
+			return "Please retype the Order Information";
+		}
 	}
 	@RequestMapping(value="/ordering/{OrderID}",method=RequestMethod.GET)
 	public OrderResponse getOrderDB(@PathVariable("OrderID") String Orderid){
