@@ -3,12 +3,14 @@ package com.datachester.ordermanagement.orderprocessing.service;
 //import java.util.ArrayList;
 import java.util.List;
 
-
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.datachester.ordermanagement.orderprocessing.vo.*;
+
 import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
 import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
+import com.datachester.ordermanagement.orderprocessing.vo.OrderRequest;
+import com.datachester.ordermanagement.orderprocessing.vo.OrderResponse;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,12 +27,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse get(String orderID){
-    	OrderResponse orderresponse = new OrderResponse();
-    	orderresponse.setOrderID(orderRepo.findByOrderID(orderID).getOrderID());
-    	orderresponse.setName(orderRepo.findByOrderID(orderID).getName());
-    	orderresponse.setStatus(orderRepo.findByOrderID(orderID).getStatus());
-        orderresponse.setDate(orderRepo.findByOrderID(orderID).getDate());
-        return orderresponse;
+    	OrderResponse orderResponse = new OrderResponse();
+    	BeanUtils.copyProperties(orderRepo.findByOrderID(orderID), orderResponse);
+        return orderResponse;
         
     }
     @Override

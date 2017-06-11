@@ -43,6 +43,7 @@ public class OrderProcessingController {
 
 	@RequestMapping(value="/cancel",method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
+	
 	public String deleteOrderDB(@RequestBody OrderRequest orderCancel){
 		if ( orderservice.get(orderCancel.getOrderID()).getStatus() == "preparing shipping"){
 			orderservice.delete(orderCancel.getOrderID());
@@ -73,9 +74,9 @@ public class OrderProcessingController {
     	return orderservice.getnum();
     }
     
-    @RequestMapping(value="/ship",method=RequestMethod.POST)
+    @RequestMapping(value="/ship/{orderID}",method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public void ship(@RequestBody OrderRequest orderID){
+	public void ship(@PathVariable String orderID){
 
 		deliveryservice.ship(orderID);
 		
