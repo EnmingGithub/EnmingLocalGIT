@@ -21,9 +21,9 @@ public class DeliveryServiceImpl implements DeliveryService{
 	}
 	
 	@Override
-    public void deliver(OrderRequest orderID){
+    public void deliver(String orderID){
 		OrderEntity orderupdate = new OrderEntity();
-		orderupdate = orderRepo.findByOrderID(orderID.getOrderID());
+		orderupdate = orderRepo.findByOrderID(orderID);
 		orderupdate.setStatus("Delivered");
 		orderRepo.save(orderupdate);
 	}

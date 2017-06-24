@@ -81,9 +81,9 @@ public class OrderProcessingController {
 		deliveryservice.ship(orderID);
 		
 	}
-    @RequestMapping(value="/deliver",method=RequestMethod.POST)
+    @RequestMapping(value="/deliver/{orderID}",method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public void deliver(@RequestBody OrderRequest orderID){
+	public void deliver(@RequestBody String orderID){
 
 		deliveryservice.deliver(orderID);
 		
