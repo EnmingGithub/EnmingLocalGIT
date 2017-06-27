@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public interface OrderService {
-      public void create(OrderRequest order);
+      public OrderEntity create(OrderRequest order);
       public List<OrderEntity> getAll();
       public OrderResponse get(String orderid);
       public long getnum();

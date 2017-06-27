@@ -18,11 +18,12 @@ public class OrderServiceImpl implements OrderService {
 	private OrderRepository orderRepo;
 
 	@Override
-    public void create(OrderRequest order){
+    public OrderEntity create(OrderRequest order){
 		OrderEntity orderEntity = new OrderEntity();
 		orderEntity.setOrderID(order.getOrderID());
 		orderEntity.setName(order.getName());
-		orderRepo.save(orderEntity);
+		return orderRepo.save(orderEntity);
+		
 	}
 
     @Override

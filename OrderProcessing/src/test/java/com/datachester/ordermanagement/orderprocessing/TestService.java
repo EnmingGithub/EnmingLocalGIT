@@ -1,4 +1,4 @@
-package com.datachester.ordermanagement.orderprocessing.service;
+package com.datachester.ordermanagement.orderprocessing;
 
 public interface TestService {
 

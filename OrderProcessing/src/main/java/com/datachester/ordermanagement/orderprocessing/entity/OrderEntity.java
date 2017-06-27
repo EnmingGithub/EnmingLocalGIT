@@ -14,6 +14,7 @@ public class OrderEntity {
 	private String name;
 	private String status;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATED_DATE")
 	private Date date;
     

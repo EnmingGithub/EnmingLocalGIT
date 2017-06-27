@@ -1,5 +1,6 @@
-package com.datachester.ordermanagement.orderprocessing.controller;
+package com.datachester.ordermanagement.orderprocessing;
 
+import com.datachester.ordermanagement.orderprocessing.controller.OrderProcessingController;
 import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
 import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
 import com.datachester.ordermanagement.orderprocessing.service.*;
