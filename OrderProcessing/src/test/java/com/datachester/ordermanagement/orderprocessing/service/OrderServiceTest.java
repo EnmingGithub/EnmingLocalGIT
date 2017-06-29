@@ -78,28 +78,71 @@ public class OrderServiceTest {
 		OrderEntity firstEntity = new OrderEntity();
 		firstEntity.setOrderID(order.getOrderID());
 		firstEntity.setName(order.getName());
-		
-		OrderResponse orderResponse = new OrderResponse();
-    	BeanUtils.copyProperties(firstEntity, orderResponse);
     	
 		when(orderRepo.findByOrderID(anyString())).thenReturn(firstEntity);
+		OrderResponse orderResponse = new OrderResponse();
+    	BeanUtils.copyProperties(firstEntity, orderResponse);
     	OrderResponse entity= orderService.get(order.getOrderID());
     	Assert.assertNotNull("OrderEntity should not be null", orderService.get(order.getOrderID()));
-    	Assert.assertEquals("Order not matched",orderResponse.getOrderID() , entity.getOrderID());
+    	Assert.assertEquals("Order not matched",orderResponse, entity);
+    	//Q1
+    	// The reply type of this method should be OrderResponse, but the orderRepo.findByOrderID reply type is OrderEntity
+    	// I don`t know how to convert OrderEntity to OrderResponse and put a OrderResponse type variable at the actual value position. 
     }
-	@Ignore
+   
 	@Test
     public void getnumTest(){
+		OrderRequest order = new OrderRequest();
+		order.setOrderID("121");
+		order.setName("1st");
+		
+		OrderEntity firstEntity = new OrderEntity();
+		firstEntity.setOrderID(order.getOrderID());
+		firstEntity.setName(order.getName());
     	
+		OrderEntity secondEntity = new OrderEntity();
+		secondEntity.setOrderID(order.getOrderID());
+		secondEntity.setName(order.getName());
+		
+		//when(orderRepo.count()).thenReturn(((Arrays.asList(firstEntity,secondEntity)).size()).longValue());
+        //Q2 
+		//The reply type of this method should be Long , but seems I can not convert the int to long
+    	long total= orderService.getnum();
+    	Assert.assertNotNull("OrderCount should not be null", orderService.getnum());
+    	Assert.assertEquals("OrderCount not matched",1,total);
     }
-	@Ignore
+
 	@Test
     public void deleteTest(){
-    	
+		OrderRequest order = new OrderRequest();
+		order.setOrderID("121");
+		order.setName("1st");
+		
+		OrderEntity orderEntity = new OrderEntity();
+		orderEntity.setOrderID(order.getOrderID());
+		orderEntity.setName(order.getName());
+		
+		
+		when(orderRepo.findByOrderID(anyString())).thenReturn(orderEntity);
+		String orderID = (orderService.get(order.getOrderID())).getOrderID();
+    	orderService.delete(orderID);
+    	Assert.assertNull("OrderEntity should be null", orderService.get(order.getOrderID()));
+    	//Assert.assertEquals("OrderID not matched", "121", entity.getOrderID());
     }
-	@Ignore
 	@Test
     public void getStatusTest(){
-    	
+		OrderRequest order = new OrderRequest();
+		order.setOrderID("121");
+		order.setName("1st");
+		
+		OrderEntity orderEntity = new OrderEntity();
+		orderEntity.setOrderID(order.getOrderID());
+		orderEntity.setName(order.getName());
+		
+		
+		when(orderRepo.findByOrderID(anyString())).thenReturn(orderEntity);
+    	String status = orderService.getStatus(order.getOrderID());
+    	Assert.assertNotNull("OrderStatus should not be null", orderService.getStatus(order.getOrderID()));
+    	Assert.assertEquals("OrderStatus not matched", "preparing shipping", status);
     }
 }
