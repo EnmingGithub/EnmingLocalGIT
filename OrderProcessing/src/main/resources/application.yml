@@ -14,4 +14,8 @@ endpoints:
   enabled: true
   mappings:
     enabled: true
+management:
+   security:
+           enabled: false
+  
     

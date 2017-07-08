@@ -4,6 +4,7 @@ import com.datachester.ordermanagement.orderprocessing.controller.OrderProcessin
 import com.datachester.ordermanagement.orderprocessing.entity.OrderEntity;
 import com.datachester.ordermanagement.orderprocessing.repo.OrderRepository;
 import com.datachester.ordermanagement.orderprocessing.service.*;
+import com.datachester.ordermanagement.orderprocessing.vo.OrderRequest;
 import com.datachester.ordermanagement.orderprocessing.vo.OrderResponse;
 
 import org.junit.Before;
@@ -39,10 +40,10 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.Arrays;
 
-import javax.ws.rs.core.MediaType;
+import org.springframework.http.MediaType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
+@ContextConfiguration(classes=OrderProcessingApplication.class)
 public class OrderProcessingControllerTest {
 
 	private MockMvc mockMvc;
@@ -50,7 +51,7 @@ public class OrderProcessingControllerTest {
 	@Mock
 	private TestService testService;
 
-	@InjectMocks
+	@Autowired
 	OrderProcessingController testController;
 
 	@Before
@@ -61,8 +62,15 @@ public class OrderProcessingControllerTest {
 
 	@Test
 	public void testSave() throws Exception {
-		mockMvc.perform(post("/ordering").param("121", "1st").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		OrderRequest first = new OrderRequest();
+		first.setOrderID("121");
+		first.setName("1st");
+		mockMvc.perform(post("/ordering")).andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$[0].id", is(1))).andExpect(jsonPath("$[0].OrderID", is("121")))
+				.andExpect(jsonPath("$[0].Name", is("1st")));
+		verify(testController, times(1)).save(first);;
+		verifyNoMoreInteractions(testController);
 	}
 
 	@Test
@@ -76,22 +84,27 @@ public class OrderProcessingControllerTest {
 		OrderResponse first = new OrderResponse();
 		first.setOrderID("121");
 		first.setName("1st");
-		first.setStatus(new OrderEntity().getStatus());
-		first.setDate(new OrderEntity().getDate());
 		
-		when(testController.getOrderDB("121")).thenReturn(first);
-		mockMvc.perform(get("/ordering/{OrderID}","121"))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$", hasSize(1)))
-				.andExpect(jsonPath("$[0].id", is(1))).andExpect(jsonPath("$[0].OrderID", is("121")))
-				.andExpect(jsonPath("$[0].Name", is("1st")));
-		verify(testController, times(1)).getOrderDB("121");
+		mockMvc.perform(get("/ordering/{OrderID}")).andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(jsonPath("$", hasSize(1)))
+		.andExpect(jsonPath("$[0].id", is(1))).andExpect(jsonPath("$[0].OrderID", is("121")))
+		.andExpect(jsonPath("$[0].Name", is("1st")));
+        verify(testController, times(1)).getOrderDB(first.getOrderID());
+        verifyNoMoreInteractions(testController);
 	}
 
 	@Test
 	public void testGetOrderStatus() throws Exception {
-		ResultActions perform = mockMvc.perform(get("/status/{OrderID}", "121"));
-		perform.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.OrderID").value("121"));
+		OrderResponse first = new OrderResponse();
+		first.setOrderID("121");
+		first.setName("1st");
+		
+		mockMvc.perform(get("/ordering/{OrderID}")).andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(jsonPath("$", hasSize(1)))
+		.andExpect(jsonPath("$[0].id", is(1))).andExpect(jsonPath("$[0].OrderID", is("121")))
+		.andExpect(jsonPath("$[0].status", is("preparing shipping")));
+        verify(testController, times(1)).getOrderDB(first.getOrderID());
+        verifyNoMoreInteractions(testController);
 	}
 
 	@Test
@@ -99,13 +112,15 @@ public class OrderProcessingControllerTest {
 		OrderEntity first = new OrderEntity();
 		first.setOrderID("121");
 		first.setName("1st");
+		
 		/*
 		 * OrderEntity second = new OrderEntity(); second.setOrderID("122");
 		 * second.setName("2nd");
 		 */
 	//	when(testController.findAll()).thenReturn(Arrays.asList(first));
+		
 		mockMvc.perform(get("/history")).andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(jsonPath("$", hasSize(1)))
 				.andExpect(jsonPath("$[0].id", is(1))).andExpect(jsonPath("$[0].OrderID", is("121")))
 				.andExpect(jsonPath("$[0].Name", is("1st")));
 		verify(testController, times(1)).findAll();

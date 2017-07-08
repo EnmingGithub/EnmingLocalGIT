@@ -79,12 +79,11 @@ public class OrderServiceTest {
 		firstEntity.setOrderID(order.getOrderID());
 		firstEntity.setName(order.getName());
     	
-		when(orderRepo.findByOrderID(anyString())).thenReturn(firstEntity);
-		OrderResponse orderResponse = new OrderResponse();
-    	BeanUtils.copyProperties(firstEntity, orderResponse);
-    	OrderResponse entity= orderService.get(order.getOrderID());
-    	Assert.assertNotNull("OrderEntity should not be null", orderService.get(order.getOrderID()));
-    	Assert.assertEquals("Order not matched",orderResponse, entity);
+		when(orderRepo.findByOrderID("121")).thenReturn(firstEntity);
+
+    	OrderResponse response= orderService.get(order.getOrderID());
+    	Assert.assertNotNull("OrderEntity should not be null",response);
+    	Assert.assertEquals("Order not matched","1st", response.getName());
     	//Q1
     	// The reply type of this method should be OrderResponse, but the orderRepo.findByOrderID reply type is OrderEntity
     	// I don`t know how to convert OrderEntity to OrderResponse and put a OrderResponse type variable at the actual value position. 
@@ -104,7 +103,7 @@ public class OrderServiceTest {
 		secondEntity.setOrderID(order.getOrderID());
 		secondEntity.setName(order.getName());
 		
-		//when(orderRepo.count()).thenReturn(((Arrays.asList(firstEntity,secondEntity)).size()).longValue());
+		when(orderRepo.count()).thenReturn((long) 1);
         //Q2 
 		//The reply type of this method should be Long , but seems I can not convert the int to long
     	long total= orderService.getnum();
