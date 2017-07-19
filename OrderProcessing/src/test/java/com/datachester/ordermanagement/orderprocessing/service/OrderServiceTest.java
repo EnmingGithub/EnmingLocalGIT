@@ -18,6 +18,9 @@ import com.datachester.ordermanagement.orderprocessing.vo.OrderResponse;
 
 import org.junit.Assert;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -113,20 +116,8 @@ public class OrderServiceTest {
 
 	@Test
     public void deleteTest(){
-		OrderRequest order = new OrderRequest();
-		order.setOrderID("121");
-		order.setName("1st");
-		
-		OrderEntity orderEntity = new OrderEntity();
-		orderEntity.setOrderID(order.getOrderID());
-		orderEntity.setName(order.getName());
-		
-		
-		when(orderRepo.findByOrderID(anyString())).thenReturn(orderEntity);
-		String orderID = (orderService.get(order.getOrderID())).getOrderID();
-    	orderService.delete(orderID);
-    	Assert.assertNull("OrderEntity should be null", orderService.get(order.getOrderID()));
-    	//Assert.assertEquals("OrderID not matched", "121", entity.getOrderID());
+    	orderService.delete("121");
+		verify(orderRepo, times(1)).deleteOrdersByOrderId("121");
     }
 	@Test
     public void getStatusTest(){

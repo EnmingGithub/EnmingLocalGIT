@@ -26,9 +26,7 @@ public class OrderProcessingController {
 	@RequestMapping(value = "/ordering", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public void save(@RequestBody OrderRequest order) {
-
 		orderservice.create(order);
-
 	}
 
 	@RequestMapping(value = "/cancel", method = RequestMethod.DELETE)

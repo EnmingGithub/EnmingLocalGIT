@@ -4,11 +4,13 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name="Orders")
 public class OrderEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUST_SEQ")
-	@SequenceGenerator(sequenceName = "customer_seq", allocationSize = 1, name = "CUST_SEQ")
+	
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_SEQ")
+	@SequenceGenerator(sequenceName = "order_seq", allocationSize = 1, name = "ORDER_SEQ")
 	private Integer id;
 	private String orderID;
 	private String name;

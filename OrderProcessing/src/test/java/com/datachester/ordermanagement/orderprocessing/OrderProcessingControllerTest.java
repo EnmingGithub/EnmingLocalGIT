@@ -146,8 +146,9 @@ public class OrderProcessingControllerTest {
 
 	@Test
 	public void testDeliver() throws Exception {
-		ResultActions perform = mockMvc.perform(get("/deliver/{OrderID}", "121"));
-		perform.andExpect(status().isOk());
+		mockMvc.perform(get("/deliver/{OrderID}","121")).andExpect(status().isOk());
+
+
 	}
 
 }
