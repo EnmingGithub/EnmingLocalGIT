@@ -1,4 +1,4 @@
-package com.testingproject.microservices.helloworld;
+package com.testingproject.cctesting.helloworld;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
