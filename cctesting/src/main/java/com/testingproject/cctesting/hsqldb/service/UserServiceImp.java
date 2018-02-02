@@ -26,9 +26,9 @@ public class UserServiceImp implements UserService {
 	@Override
 	public UserResponse get(String name){
 		UserResponse userresponse = new UserResponse();
-		userresponse.setId(userRepo.findByName(name).getId());
-		userresponse.setAge(userRepo.findByName(name).getAge());
-		userresponse.setName(userRepo.findByName(name).getName());
+		userresponse.setId(userRepo.findByName(name) == null ? 0:userRepo.findByName(name).getId());
+		userresponse.setAge(userRepo.findByName(name) == null ? 0:userRepo.findByName(name).getAge());
+		userresponse.setName(userRepo.findByName(name) == null ? "Not Existing":userRepo.findByName(name).getName());
 		return userresponse;
 	}
 	
