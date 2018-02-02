@@ -24,21 +24,17 @@ public class UserServiceImp implements UserService {
 	}
 	
 	@Override
-	public UserResponse get(Long id){
+	public UserResponse get(String name){
 		UserResponse userresponse = new UserResponse();
-		userresponse.setId(id);
-		userresponse.setAge(userRepo.findByid(id).getAge());
-		userresponse.setName(userRepo.findByid(id).getName());
+		userresponse.setId(userRepo.findByName(name).getId());
+		userresponse.setAge(userRepo.findByName(name).getAge());
+		userresponse.setName(userRepo.findByName(name).getName());
 		return userresponse;
 	}
 	
-	@Override
-	public List<User> getAll(){
-		return userRepo.findAll();
-	}
 	
 	@Override
-	public void delete(Long id){
-		userRepo.delete(id);
+	public void delete(String name){
+		userRepo.deleteByName(name);
 	}
 }

@@ -31,16 +31,16 @@ public class UserController {
 		userservice.create(user);
 	}
 	
-	@GetMapping (path = "/user/{id}")
+	@GetMapping (path = "/user/{name}")
 	@ResponseStatus(HttpStatus.OK)
-	public UserResponse query (@PathVariable Long id){
-		return userservice.get(id);
+	public UserResponse query (@PathVariable String name){
+		return userservice.get(name);
 	}
 	
-	@DeleteMapping (path = "/userremove/{id}")
+	@DeleteMapping (path = "/userremove/{name}")
 	@ResponseStatus(HttpStatus.OK)
-	public void delete (@PathVariable Long id){
-		userservice.delete(id);
+	public void delete (@PathVariable String name){
+		userservice.delete(name);
 	}
 	
 	
